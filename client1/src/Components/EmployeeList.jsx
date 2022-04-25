@@ -23,6 +23,23 @@ const EmployeeList = () => {
 
     }
 
+    //DELETE
+    // const deleteUser = (userid) => {
+    //     UserService.deleteUser(userid).then( (response) =>{
+    //         getAllUsers();  
+
+    //     }).catch(error =>{
+    //         console.log(error);
+    //     })
+    // }
+    const deleteEmployee = (id) =>{
+        EmployeeService.deleteEmployee(id).then((response) =>{
+            getAllEmployees();
+        }).catch(error=>{
+            console.log(error);
+        })
+    } 
+
     
 
   return (
@@ -59,8 +76,9 @@ const EmployeeList = () => {
                         
                         <td>
                            {/* <Link to = {`/edit-user/${employee.id}`} className='btn btn-info'> Update</Link>
-                           <button className = "btn btn-danger" onClick = {() => deleteUser(user.id)}
-                                   style = {{marginLeft:"10px"}}> Delete</button> */}
+                            */}
+                        <button className = "btn btn-danger" onClick = {() => deleteEmployee(employee.id)}
+                                   style = {{marginLeft:"10px"}}> Delete</button>
                         </td>
           
 

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import Axios from "axios";
 import '../App.css';
 import EmployeeService from '../Services/EmployeeService';
@@ -21,7 +21,7 @@ function AddEmployee1() {
   const [newWage, setNewWage] = useState(0);
 
  //useHistory() gives you access to the history instance that you use to navigate
-//  const history = useHistory();
+ const navigate = useNavigate();
  //useParams() will be used to retrieve ID from url - Provides objects that contains key value points from url 
  const {id} = useParams();     
 
@@ -40,7 +40,7 @@ function AddEmployee1() {
 
           console.log(response.data);
 
-          // history.push('/employeeList');
+          navigate('/employeeList');
 
       }).catch(error =>{
           console.log(error);
