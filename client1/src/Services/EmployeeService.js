@@ -32,7 +32,7 @@ class EmployeeService {
 
     //Update
     updateEmployee(id, employee){
-        return axios.put(EMPLOYEE_UPDATE + '/' + id, employee);
+        return axios.put(EMPLOYEE_LIST + '/' + id, employee);
     }
 
 }
