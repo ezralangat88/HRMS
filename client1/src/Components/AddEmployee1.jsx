@@ -25,6 +25,18 @@ function AddEmployee1() {
  //useParams() will be used to retrieve ID from url - Provides objects that contains key value points from url 
  const {id} = useParams();     
 
+  //Getting employee by id and setting them to state variables to populate form for editing.
+ useEffect(() => {
+   EmployeeService.getEmployeeById(id).then((response)=>{
+     setName(response.data.name)
+     setAge(response.data.age)
+     setCountry(response.data.age)
+     setPosition(response.data.position)
+     setAge(response.data.age)
+   }).catch((error)=>{
+     console.log(error)
+   })
+ }, [])
 
 // SAVE or UPATE
     // Getting data from properties onclicking save btn
@@ -56,8 +68,24 @@ function AddEmployee1() {
       
   }   
 
+  //Adding Condition to change page title dynamically
+  const title = () =>{
+
+    if(id){
+        return <h3 className="text-center">Update Employee</h3>
+    } 
+    else {
+        return <h3 className="text-center">Add Employee</h3>
+
+    }
+    
+}
+
   return (
     <div className="App">
+      {
+        title()
+      }
     <div className="information">
       
       <label>Name:</label>

@@ -26,7 +26,7 @@ class EmployeeService {
     }
 
     //Get employee by id
-    getUserById(id){
+    getEmployeeById(id){
         return axios.get(EMPLOYEE_LIST + '/' + id);  
     }
 
