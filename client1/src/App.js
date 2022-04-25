@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import AddEmployee from './Footer/AddEmployee';
-import EmployeeList from './Footer/EmployeeList';
-import HeaderComponent from './Footer/Header';
-import FooterComponent from './Footer/Footer';
-
+import AddEmployee from './Components/AddEmployee';
+import AddEmployee1 from './Components/AddEmployee1';
+import HeaderComponent from './Components/Header';
+import FooterComponent from './Components/Footer';
+import EmployeeList from './Components/EmployeeList';
 function App() {
  
 
@@ -15,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<AddEmployee />} />
         <Route path="/addEmployee" element={<AddEmployee />} />
+        <Route path="/addEmployee12" element={<AddEmployee1 />} />
         <Route path="/employeeList" element={<EmployeeList />} />
       </Routes>
       <FooterComponent/>
