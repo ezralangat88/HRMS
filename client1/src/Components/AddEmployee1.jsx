@@ -33,20 +33,27 @@ function AddEmployee1() {
       e.preventDefault();
 
       const employee = {name, age, country, position, wage }
-  
-      
+
+      if(id){
+        EmployeeService.updateEmployee(id, employee).then((response) =>{
+          navigate('/employeeList');
+        }).catch(error =>{
+          console.log(error);
+      }) 
+      }else{
+
       //Parsing User to addUser() to send  User data to Rest API 
       EmployeeService.addEmployee(employee).then (response =>{
 
-          console.log(response.data);
+        console.log(response.data);
 
-          navigate('/employeeList');
+        navigate('/employeeList');
 
-      }).catch(error =>{
-          console.log(error);
-      })
-
-     
+    }).catch(error =>{
+        console.log(error);
+    })
+    }
+      
   }   
 
   return (

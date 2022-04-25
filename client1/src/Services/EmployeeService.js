@@ -4,6 +4,7 @@ import axios from "axios";
 const EMPLOYEE_LIST = "http://localhost:5001/employees";
 const EMPLOYEE_ADD = "http://localhost:5001/create";
 const EMPLOYEE_DELETE = "http://localhost:5001/delete";
+const EMPLOYEE_UPDATE = "http://localhost:5001/update";
 
 class EmployeeService { 
 
@@ -29,7 +30,10 @@ class EmployeeService {
         return axios.get(EMPLOYEE_LIST + '/' + id);  
     }
 
-
+    //Update
+    updateEmployee(id, employee){
+        return axios.put(EMPLOYEE_UPDATE + '/' + id, employee);
+    }
 
 }
 

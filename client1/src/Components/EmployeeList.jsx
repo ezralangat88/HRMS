@@ -6,6 +6,7 @@ import EmployeeService from '../Services/EmployeeService';
 const EmployeeList = () => {
     const [employees, setEmployees] = useState([]);
 
+    // LIST
     useEffect(() => {
       getAllEmployees();
     
@@ -22,6 +23,10 @@ const EmployeeList = () => {
         })
 
     }
+
+    //UPDATE
+
+
 
     //DELETE
     const deleteEmployee = (id) =>{
@@ -68,6 +73,7 @@ const EmployeeList = () => {
                         <td>
                            {/* <Link to = {`/edit-user/${employee.id}`} className='btn btn-info'> Update</Link>
                             */}
+                       <Link to = {`/editEmployee/${employee.id}`} className='btn btn-info'> Update</Link>             
                         <button className = "btn btn-danger" onClick = {() => deleteEmployee(employee.id)}
                                    style = {{marginLeft:"10px"}}> Delete</button>
                         </td>
