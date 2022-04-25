@@ -24,14 +24,6 @@ const EmployeeList = () => {
     }
 
     //DELETE
-    // const deleteUser = (userid) => {
-    //     UserService.deleteUser(userid).then( (response) =>{
-    //         getAllUsers();  
-
-    //     }).catch(error =>{
-    //         console.log(error);
-    //     })
-    // }
     const deleteEmployee = (id) =>{
         EmployeeService.deleteEmployee(id).then((response) =>{
             getAllEmployees();
@@ -46,7 +38,6 @@ const EmployeeList = () => {
     <div className='container'> 
     <h2 className='text-center'>Employee List</h2>  
     
-    <Link to = 'add-user' className='btn btn-primary mb-2' style = {{marginLeft:"10px"}} >Add Employee</Link>
     <table className='table table-striped table-bordered'>
     <thead>
             <th>ID </th>

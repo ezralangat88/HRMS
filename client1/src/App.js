@@ -14,8 +14,7 @@ function App() {
       <HeaderComponent/>
       <Routes>
         <Route path="/" element={<AddEmployee />} />
-        <Route path="/addEmployee" element={<AddEmployee />} />
-        <Route path="/addEmployee12" element={<AddEmployee1 />} />
+        <Route path="/addEmployee" element={<AddEmployee1 />} />
         <Route path="/employeeList" element={<EmployeeList />} />
       </Routes>
       <FooterComponent/>
