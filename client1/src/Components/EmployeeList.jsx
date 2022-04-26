@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import AddEmployee from './AddEmployee';
 import { Link } from 'react-router-dom';
 import EmployeeService from '../Services/EmployeeService';
 
