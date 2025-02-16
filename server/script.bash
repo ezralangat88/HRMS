@@ -10,3 +10,7 @@ CREATE TABLE employees (
   position VARCHAR(100) NOT NULL,
   wage DECIMAL(10, 2) NOT NULL
 );
+
+npx sequelize-cli migration:generate --name create-employees-table
+
+npx sequelize-cli db:migrate

@@ -1,40 +1,65 @@
-import React from "react";
 import axios from "axios";
 
-const EMPLOYEE_LIST = "http://localhost:5001/employees";
-const EMPLOYEE_ADD = "http://localhost:5001/create";
-const EMPLOYEE_DELETE = "http://localhost:5001/delete";
-const EMPLOYEE_UPDATE = "http://localhost:5001/update";
+class EmployeeService {
+  // Base URL
+  constructor() {
+    this.BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api/employees";
+  }
 
-class EmployeeService { 
+  // Helper function to build URL with optional ID
+  buildUrl(id = "") {
+    return `${this.BASE_URL}${id ? `/${id}` : ""}`;
+  }
 
+  // List all employees
+  getEmployees() {
+    return axios.get(this.buildUrl());
+  }
 
-    //List
-    getEmployees(){
-        return axios.get(EMPLOYEE_LIST)
-    }
+  // Add new employee
+  addEmployee(employee) {
+    return axios.post(this.buildUrl(), employee);
+  }
 
-    //Add
-    addEmployee(employee){
-        return axios.post(EMPLOYEE_ADD, employee)  
-    }
+  // Delete employee by ID
+  deleteEmployee(id) {
+    return axios.delete(this.buildUrl(id));
+  }
 
-    //Delete
-    deleteEmployee(id){
-        return axios.delete(EMPLOYEE_DELETE + '/' + id);
+  // Get employee by ID
+  getEmployeeById(id) {
+    return axios.get(this.buildUrl(id));
+  }
 
-    }
+  // Update employee by ID
+  updateEmployee(id, employee) {
+    return axios.put(this.buildUrl(id), employee);
+  }
 
-    //Get employee by id
-    getEmployeeById(id){
-        return axios.get(EMPLOYEE_LIST + '/' + id);  
-    }
+  // Count all employees
+  countEmployees() {
+    return axios.get(`${this.BASE_URL}/count`);
+  }
 
-    //Update
-    updateEmployee(id, employee){
-        return axios.put(EMPLOYEE_LIST + '/' + id, employee);
-    }
+  // Get average salary
+  getAverageSalary() {
+    return axios.get(`${this.BASE_URL}/stats/average-salary`);
+  }
 
+  // Get average age
+  getAverageAge() {
+    return axios.get(`${this.BASE_URL}/stats/average-age`);
+  }
+
+  // Get department count
+  getDepartmentCount() {
+    return axios.get(`${this.BASE_URL}/stats/department-count`);
+  }
+
+  // Get active employee count
+  getActiveEmployeeCount() {
+    return axios.get(`${this.BASE_URL}/stats/active-employees`);
+  }
 }
 
 export default new EmployeeService();

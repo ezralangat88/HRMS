@@ -1,25 +1,23 @@
+require('dotenv').config();
 const express = require("express");
-const app = express();
-const mysql = require('mysql2');
 const cors = require("cors");
+const mysql = require('mysql2');
+const fs = require('fs');               // To check for existing files
+const path = require('path');
+const { exec } = require('child_process'); // Import child_process to run shell commands
 
-// Allow CORS requests
-app.use(cors());
+const employeeRoutes = require('./routes/employeeRoutes');
+const app = express();
 
-// JSON middleware to parse request body
-app.use(express.json());
-
-// Create a connection pool for better performance
+// Create a connection pool (to ensure database exists before migrations)
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'pass',  
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'root',  // Use your MySQL root password
+  multipleStatements: true  
 });
 
-// Function to initialize the database and table
+// Function to initialize the database
 const initializeDB = () => {
   pool.query("CREATE DATABASE IF NOT EXISTS hrms;", (err) => {
     if (err) {
@@ -27,95 +25,63 @@ const initializeDB = () => {
       return;
     }
     console.log('Database created or already exists.');
-
-    // Use the hrms database
-    pool.query("USE hrms;", (err) => {
-      if (err) {
-        console.error('Error selecting database:', err);
-        return;
-      }
-      console.log('Using hrms database.');
-
-      // Create Table if not exists
-      const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS employees (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          name VARCHAR(100) NOT NULL,
-          age INT NOT NULL,
-          country VARCHAR(100) NOT NULL,
-          position VARCHAR(100) NOT NULL,
-          wage DECIMAL(10, 2) NOT NULL
-        );
-      `;
-      pool.query(createTableQuery, (err) => {
-        if (err) {
-          console.error('Error creating table:', err);
-          return;
-        }
-        console.log('Table employees created or already exists.');
-      });
-    });
   });
 };
 
-// Call the function to initialize the database
+// Function to run Sequelize commands
+const runMigrations = () => {
+  // Check if migration already exists
+  const migrationsDir = path.join(__dirname, 'migrations');
+  const migrationExists = fs.existsSync(migrationsDir) && fs.readdirSync(migrationsDir)
+    .some(file => file.includes('create-employees-table'));
+
+  // Generate Migration only if it doesn't already exist
+  if (!migrationExists) {
+    console.log('No migration found for employees table. Creating one now...');
+    exec('npx sequelize-cli migration:generate --name create-employees-table', (err, stdout, stderr) => {
+      if (err) {
+        console.error('Error generating migration:', stderr);
+        return;
+      }
+      console.log('Migration generated:', stdout);
+
+      // Run Migrations after generating
+      exec('npx sequelize-cli db:migrate', (err, stdout, stderr) => {
+        if (err) {
+          console.error('Error running migrations:', stderr);
+          return;
+        }
+        console.log('Migrations completed:', stdout);
+      });
+    });
+  } else {
+    console.log('Migration for employees table already exists. Running migrations...');
+    // Always run Migrations to ensure table is created
+    exec('npx sequelize-cli db:migrate', (err, stdout, stderr) => {
+      if (err) {
+        console.error('Error running migrations:', stderr);
+        return;
+      }
+      console.log('Migrations completed:', stdout);
+    });
+  }
+};
+
+// Middlewares
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use('/api/employees', employeeRoutes);
+
+// Initialize DB and then start the server
 initializeDB();
 
-// Route to Create Employee
-app.post("/create", (req, res) => {
-  const { name, age, country, position, wage } = req.body;
-  const query = "INSERT INTO employees (name, age, country, position, wage) VALUES (?, ?, ?, ?, ?)";
-  pool.query(query, [name, age, country, position, wage], (err, result) => {
-    if (err) {
-      console.error('Error inserting record:', err);
-      res.status(500).json({ error: "Error inserting record" });
-    } else {
-      res.status(201).json({ message: "Records Inserted Successfully", result });
-    }
-  });
-});
+// Run Migrations
+setTimeout(runMigrations, 2000); // Delay to ensure DB is ready
 
-// Route to Get All Employees
-app.get("/employees", (req, res) => {
-  pool.query("SELECT * FROM employees", (err, result) => {
-    if (err) {
-      console.error('Error fetching records:', err);
-      res.status(500).json({ error: "Error fetching records" });
-    } else {
-      res.status(200).json(result);
-    }
-  });
-});
-
-// Route to Update Employee
-app.put("/employees/:id", (req, res) => {
-  const { id } = req.params;
-  const { name, age, country, position, wage } = req.body;
-  const query = "UPDATE employees SET name = ?, age = ?, country = ?, position = ?, wage = ? WHERE id = ?";
-  pool.query(query, [name, age, country, position, wage, id], (err, result) => {
-    if (err) {
-      console.error('Error updating record:', err);
-      res.status(500).json({ error: "Error updating record" });
-    } else {
-      res.status(200).json({ message: "Record Updated Successfully", result });
-    }
-  });
-});
-
-// Route to Delete Employee
-app.delete("/delete/:id", (req, res) => {
-  const { id } = req.params;
-  pool.query("DELETE FROM employees WHERE id = ?", [id], (err, result) => {
-    if (err) {
-      console.error('Error deleting record:', err);
-      res.status(500).json({ error: "Error deleting record" });
-    } else {
-      res.status(200).json({ message: "Record Deleted Successfully", result });
-    }
-  });
-});
-
-// Start the Server
-app.listen(5001, () => {
-  console.log("Server running at port 5001");
+// Start Server
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });

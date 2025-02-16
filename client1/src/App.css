@@ -76,3 +76,31 @@
   color: rgb(19, 161, 26)
 }
 
+/*  */
+.dashboard-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.stat-box {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 150px;
+}
+
+.stat-box h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.stat-box p {
+  margin: 10px 0 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+/*  */
