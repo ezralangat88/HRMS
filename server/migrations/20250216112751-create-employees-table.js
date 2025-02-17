@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false
       },
       age: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       country: {
@@ -28,12 +28,16 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      role: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       position: {
         type: Sequelize.STRING,
         allowNull: false
       },
       wage: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.STRING,
         allowNull: false
       },
       status: {

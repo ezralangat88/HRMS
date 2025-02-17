@@ -7,18 +7,18 @@ const Employee = {
   },
 
   create: (data) => {
-    const { firstName, lastName, age, country, department, position, wage, status, email, username, password } = data;
+    const { firstName, lastName, age, country, department,role, position, wage, status, email, username, password } = data;
     return db.query(
-      "INSERT INTO employees (firstName, lastName, age, country, department, position, wage, status, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [firstName, lastName, age, country, department, position, wage, status, email, username, password]
+      "INSERT INTO employees (firstName, lastName, age, country, department, role, position, wage, status, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [firstName, lastName, age, country, department,role, position, wage, status, email, username, password]
     );
   },
 
   update: (id, data) => {
-    const { firstName, lastName, age, country, department, position, wage, status, email, username, password } = data;
+    const { firstName, lastName, age, country, department, role, position, wage, status, email, username, password } = data;
     return db.query(
-      "UPDATE employees SET firstName=?, lastName=?, age=?, country=?, department=?, position=?, wage=?, status=?, email=?, username=?, password=? WHERE id=?",
-      [firstName, lastName, age, country, department, position, wage, status, email, username, password, id]
+      "UPDATE employees SET firstName=?, lastName=?, age=?, country=?, department=?, role=?, position=?, wage=?, status=?, email=?, username=?, password=? WHERE id=?",
+      [firstName, lastName, age, country, department,role, position, wage, status, email, username, password, id]
     );
   },
 

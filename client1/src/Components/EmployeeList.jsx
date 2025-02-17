@@ -37,11 +37,15 @@ const EmployeeList = () => {
   // Filter employees based on search term
   const filteredEmployees = employees.filter(employee => 
     [
-      employee.name, 
+      employee.firstName, 
+      employee.lastName, 
       employee.country, 
       employee.position, 
       employee.department, 
-      employee.status
+      employee.role, 
+      employee.status,
+      employee.email,
+      employee.username
     ].some(field => 
       field?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -73,11 +77,9 @@ const EmployeeList = () => {
                 <button className="btn btn-primary btn-sm me-2" onClick={fetchEmployees}>
                   Search
                 </button>
-
                 <button className="btn btn-primary btn-sm me-2" onClick={() => navigate('/addEmployee')}>
                   Add Employee
                 </button>
-               
                 <button className="btn btn-secondary btn-sm" onClick={() => navigate('/')}>
                   Go Back
                 </button>
@@ -91,14 +93,17 @@ const EmployeeList = () => {
                 <table className="table table-striped">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>Name</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
                       <th>Country</th>
                       <th>Position</th>
                       <th>Age</th>
                       <th>Salary</th>
                       <th>Department</th>
+                      <th>Role</th>
                       <th>Status</th>
+                      <th>Email</th>
+                      <th>Username</th>
                       <th>Update</th>
                       <th>Delete</th>
                     </tr>
@@ -106,14 +111,17 @@ const EmployeeList = () => {
                   <tbody>
                     {filteredEmployees.map(employee => (
                       <tr key={employee.id} onDoubleClick={() => navigate(`/editEmployee/${employee.id}`)}>
-                        <td>{employee.id}</td>
-                        <td>{employee.name}</td>
+                        <td>{employee.firstName}</td>
+                        <td>{employee.lastName}</td>
                         <td>{employee.country}</td>
                         <td>{employee.position}</td>
                         <td>{employee.age}</td>
                         <td>{employee.wage}</td>
                         <td>{employee.department}</td>
+                        <td>{employee.role}</td>
                         <td>{employee.status}</td>
+                        <td>{employee.email}</td>
+                        <td>{employee.username}</td>
                         <td>
                           <Link to={`/editEmployee/${employee.id}`} className="btn btn-info btn-sm me-1">
                             Update
@@ -126,7 +134,8 @@ const EmployeeList = () => {
                             onClick={(e) => {
                               e.preventDefault();
                               deleteEmployee(employee.id);
-                            }}> 
+                            }}
+                          >
                             Delete
                           </Link>
                         </td>
